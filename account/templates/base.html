@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load bootstrap5 %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'stylesheets/login.css' %}" rel="stylesheet">
+    <link href="{% static 'stylesheets/chat.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><span class=class="navbar-toggler-icon"></span> Hello {{ request.user }}</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'logout' %}"><span class=class="navbar-toggler-icon"></span> Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'login' %}"><span class=class="navbar-toggler-icon"></span> Login</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'register' %}"><span class=class="navbar-toggler-icon"></span> Sign up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+
+{% block js %}
+{% endblock %}
+
+
+</html>

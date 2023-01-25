@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+    redis:
+      container_name: redis
+      image: redis:latest
+      restart: always
+      ports:
+        - "6379:6379"
+
+    migrations:
+      build: .
+      command: bash -c "python manage.py makemigrations chat && python manage.py migrate"
+      volumes:
+        - .:/CV_site
+
+    app:
+      build: .
+      command: bash -c "python manage.py runserver 0.0.0.0:8000"
+      restart: always
+      ports:
+        - "8000:8000"
+      volumes:
+        - .:/CV_site
+      depends_on:
+        - redis
+
