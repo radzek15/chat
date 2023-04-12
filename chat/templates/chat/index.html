@@ -10,6 +10,7 @@
 
 
 {% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $("#room-name-input").focus();
     $("#room-name-input").keyup(function(e){
@@ -20,7 +21,7 @@
 
     $("#room-name-submit").click(function() {
       var room_name = $("#room-name-input").val();
-      window.location.pathname = '/chat/chat_' + room_name + '_{{ uid4 }}/';
+      window.location.pathname = '/chat/chat' + room_name + '_{{ uid4 }}/';
     });
 </script>
 {% endblock %}

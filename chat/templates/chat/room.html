@@ -72,34 +72,17 @@
 <script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
 <script>
     $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
-    var room_mame = '{{ room_name }}';
+    var room_name = '{{ room_name }}';
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var websocket_str= ws_scheme+'://' + window.location.host + '/ws/chat/' + room_mame + '/';
-    var chatSocket = new ReconnectingWebSocket(ws_scheme+'://' + window.location.host + '/ws/chat/' + room_mame + '/');
+    var websocket_str= ws_scheme+'://' + window.location.host + '/ws/chat/' + room_name + '/';
+    var chatSocket = new ReconnectingWebSocket(websocket_str);
 
-    document.querySelector('#btn-chat').addEventListener('click', function(){
-        var message_input = document.querySelector('#btn-input');
-        chatSocket.send(JSON.stringify({
-            'message': message_input.value,
-            'user': '{{ user }}'
-        }));
-        message_input.value = '';
-    });
-
-    chatSocket.onmessage = function(e) {
+    chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
         var now_time = data['now_time'];
         var receive_user = data['user'];
         var user = "{{user}}";
-        var li = document.createElement('li');
-        li.innerHTML = '<strong>' + user + '</strong>' + ': ' + message;
-        document.querySelector('.chat').append(li);
-        var all_messages = document.getElementById("all_messages");
-        var new_message = document.createElement("li");
-        new_message.innerHTML = `<strong> ${user} </strong> <small class="text-muted"> ${now_time} </small> <br> ${message}`;
-        all_messages.appendChild(new_message);
-        all_messages.scrollTop = all_messages.scrollHeight;
         if (receive_user === user) {
             $('<li class="right clearfix"><span class="chat-img pull-right"><img src="https://dummyimage.com/50/fa7057/fff.png&text=ME" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><small class=" text-muted"><span class="glyphicon glyphicon-time"></span>'+now_time+'</small><strong class="pull-right primary-font">'+user+'</strong></div><p>'+message+'</p></div></li>').appendTo($('.chat'))
         }
@@ -109,10 +92,9 @@
         $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
         };
 
-        chatSocket.onclose = function(e) {
+        chatSocket.onclose = function (e) {
             console.error('Chat socket closed unexpectedly');
         };
-
 
         $("#btn-input").focus();
         $("#btn-input").keyup(function(e){
@@ -129,12 +111,5 @@
           $('#btn-input').val('');
 
         });
-        const room_name = '{{ room_name }}';
-    const chatSocket = new WebSocket('ws://'+ window.location.host+ '/ws/chat/'+ room_name+ '/');
-    document.querySelector('#btn-chat').onclick = function(e) {
-        var messageInputDom = document.querySelector('#btn-input');
-        var message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({'message': message}));messageInputDom.value = '';
-    };
 </script>
 {% endblock %}
