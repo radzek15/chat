@@ -1,2 +1,2 @@
 # CV-chat
-In progress. I plan to complete this project, but it may take some time due to other prioritized commitments.
+A Django chat application with Django Channels enables real-time communication, allowing users to exchange messages instantly and enjoy a dynamic chatting experience. This integration enhances traditional Django capabilities by adding asynchronous communication for seamless, interactive conversations.
